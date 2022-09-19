@@ -10,7 +10,11 @@ const Tabs = ({ tabs, id }: ITabs) => {
   const tabRefs: any = useRef({});
 
   useEffect(() => {
-    const hashVal = window.location.hash;
+    let hashVal = window.location.hash;
+    handleRouter(hashVal);
+  }, []);
+
+  const handleRouter = (hashVal: string) => {
     if (hashVal) {
       const tabId = hashVal.substring(1).split("-");
       const currentTab =
@@ -22,11 +26,10 @@ const Tabs = ({ tabs, id }: ITabs) => {
     } else {
       focusTab(tabs[0]);
     }
-  }, [tabs]);
+  };
 
   const handleClick =
     (tab: ITabsData) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-      event.preventDefault();
       focusTab(tab);
       setActiveTab(tab.label);
     };
@@ -38,6 +41,19 @@ const Tabs = ({ tabs, id }: ITabs) => {
     // Get the reference from the `tabRefs` and actual move focus to the tab
     tabRefs.current[tab.label].focus();
   };
+
+  useEffect(() => {
+    const onHashChanged = () => {
+      let hashVal = window.location.hash;
+      handleRouter(hashVal);
+    };
+
+    window.addEventListener("hashchange", onHashChanged);
+
+    return () => {
+      window.removeEventListener("hashchange", onHashChanged);
+    };
+  }, []);
 
   //key board navigation
   const handleKeyboard =
