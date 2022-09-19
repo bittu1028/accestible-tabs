@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Tab, TabItem, TabList, TabPanel, Wrap } from "./StyledTab";
 import { getNextTab, getPrevTab } from "../utils/tabUtils";
 import { ITabs, ITabsData } from "./Tabs.type";
@@ -8,7 +8,13 @@ const Tabs = ({ tabs, id }: ITabs) => {
 
   // Store the tab element references here
   const tabRefs: any = useRef({});
-  const handleClick = (tab: ITabsData) => (event: any) => {
+
+  useEffect(() => {
+    focusTab(tabs[0]);
+    console.log('test');
+  }, [tabs])
+
+  const handleClick = (tab: ITabsData) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setActiveTab(tab.label);
   };
@@ -21,6 +27,7 @@ const Tabs = ({ tabs, id }: ITabs) => {
     tabRefs.current[tab.label].focus();
   };
 
+  //key board navigation
   const handleKeyboard = (currentTabIndex: number) => (event: any) => {
     const tabCount = tabs.length;
     const firstTab = tabs[0];
