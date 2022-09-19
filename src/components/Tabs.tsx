@@ -26,7 +26,7 @@ const Tabs = ({ tabs, id }: ITabs) => {
 
   const handleClick =
     (tab: ITabsData) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-      event.stopPropagation();
+      event.preventDefault();
       focusTab(tab);
       setActiveTab(tab.label);
     };
