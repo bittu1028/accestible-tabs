@@ -27,10 +27,12 @@ export const TabItem = styled.li`
 `;
 
 // 1. Stretch the link to fill its parent
-export const Tab = styled.a`
+export const Tab = styled.button`
     background-color: ${(props: ITabLink) =>
       props.isActive ? "#ccc" : "#f1f1f1"};
     display: flex;
+    width: 100%;
+    border: none;
     pointer-events: ${(props:ITabLink) => props.isDisabled ? 'none' : 'all'};
     cursor: ${(props:ITabLink) => props.isDisabled ? 'default' : 'auto'};
     color: #0000007d;

@@ -11,10 +11,9 @@ const Tabs = ({ tabs, id }: ITabs) => {
 
   useEffect(() => {
     focusTab(tabs[0]);
-    console.log('test');
   }, [tabs])
 
-  const handleClick = (tab: ITabsData) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (tab: ITabsData) => (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setActiveTab(tab.label);
   };
@@ -66,12 +65,12 @@ const Tabs = ({ tabs, id }: ITabs) => {
             <TabItem isDisabled={tab.isDisabled} key={tab.label}>
               <Tab
                 aria-selected={isActive}
-                aria-disabled="true"
-                href={"#" + getId(tab.label, "tabpanel")}
+                aria-disabled={tab.isDisabled}
                 id={getId(tab.label)}
                 aria-controls={getId(tab.label, "tabpanel")}
                 isActive={isActive}
                 isDisabled={tab.isDisabled}
+                disabled={tab.isDisabled}
                 onClick={handleClick(tab)}
                 onKeyDown={handleKeyboard(index)}
                 tabIndex={isActive ? 0 : -1}
