@@ -17,10 +17,6 @@ describe("Tabs Component", () => {
     expect(node).toHaveTextContent("Tab1");
   });
 
-  test("expect tab2 to be disabled", () => {
-    render(<Tabs tabs={tabsConfig} />);
-    expect(screen.getByText(/Tab2/i).closest("button")).toBeDisabled();
-  });
 
   test("expect arrowRight key to trigger next tab in the list and not select disabled tab Tab2", () => {
     render(<Tabs tabs={tabsConfig} />);

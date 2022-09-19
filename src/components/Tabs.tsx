@@ -10,11 +10,22 @@ const Tabs = ({ tabs, id }: ITabs) => {
   const tabRefs: any = useRef({});
 
   useEffect(() => {
-    focusTab(tabs[0]);
+    const hashVal = window.location.hash;
+    if(hashVal) {
+      const tabId = hashVal.substring(1).split('-');
+      const currentTab = tabs.find(item => item.label === tabId[0]) ||  tabs[0];
+      if(!currentTab.isDisabled) {
+        setActiveTab(tabId[0]);
+        focusTab(currentTab);
+      }
+    } else {
+      focusTab(tabs[0]);
+    }
   }, [tabs])
 
-  const handleClick = (tab: ITabsData) => (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (tab: ITabsData) => (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
+    focusTab(tab);
     setActiveTab(tab.label);
   };
 
@@ -68,10 +79,10 @@ const Tabs = ({ tabs, id }: ITabs) => {
                 aria-disabled={tab.isDisabled}
                 id={getId(tab.label)}
                 aria-controls={getId(tab.label, "tabpanel")}
+                href={"#" + getId(tab.label, "tabpanel")}
+                onClick={handleClick(tab)}
                 isActive={isActive}
                 isDisabled={tab.isDisabled}
-                disabled={tab.isDisabled}
-                onClick={handleClick(tab)}
                 onKeyDown={handleKeyboard(index)}
                 tabIndex={isActive ? 0 : -1}
                 ref={(ref) => (tabRefs.current[tab.label] = ref)}
