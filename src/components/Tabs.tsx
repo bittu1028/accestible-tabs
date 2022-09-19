@@ -11,25 +11,27 @@ const Tabs = ({ tabs, id }: ITabs) => {
 
   useEffect(() => {
     const hashVal = window.location.hash;
-    if(hashVal) {
-      const tabId = hashVal.substring(1).split('-');
-      const currentTab = tabs.find(item => item.label === tabId[0]) ||  tabs[0];
-      if(!currentTab.isDisabled) {
+    if (hashVal) {
+      const tabId = hashVal.substring(1).split("-");
+      const currentTab =
+        tabs.find((item) => item.label === tabId[0]) || tabs[0];
+      if (!currentTab.isDisabled) {
         setActiveTab(tabId[0]);
         focusTab(currentTab);
       }
     } else {
       focusTab(tabs[0]);
     }
-  }, [tabs])
+  }, [tabs]);
 
-  const handleClick = (tab: ITabsData) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    focusTab(tab);
-    setActiveTab(tab.label);
-  };
+  const handleClick =
+    (tab: ITabsData) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+      event.stopPropagation();
+      focusTab(tab);
+      setActiveTab(tab.label);
+    };
 
-  const getId = (...rest: any) => [...rest, id].join("-");
+  const getId = (...rest: any) => [...rest].join("-");
 
   const focusTab = (tab: ITabsData) => {
     setActiveTab(tab.label);
@@ -38,33 +40,35 @@ const Tabs = ({ tabs, id }: ITabs) => {
   };
 
   //key board navigation
-  const handleKeyboard = (currentTabIndex: number) => (event: any) => {
-    const tabCount = tabs.length;
-    const firstTab = tabs[0];
-    const lastTab = tabs[tabCount - 1];
-    const nextTab = tabs[getNextTab(currentTabIndex + 1, tabs)];
-    const prevTab = tabs[getPrevTab(currentTabIndex - 1, tabs)];
+  const handleKeyboard =
+    (currentTabIndex: number) =>
+    (event: React.KeyboardEvent<HTMLAnchorElement>) => {
+      const tabCount = tabs.length;
+      const firstTab = tabs[0];
+      const lastTab = tabs[tabCount - 1];
+      const nextTab = tabs[getNextTab(currentTabIndex + 1, tabs)];
+      const prevTab = tabs[getPrevTab(currentTabIndex - 1, tabs)];
 
-    if (event.key === "ArrowRight") {
-      if (tabCount > currentTabIndex + 1) return focusTab(nextTab);
-      return focusTab(firstTab);
-    }
+      if (event.key === "ArrowRight") {
+        if (tabCount > currentTabIndex + 1) return focusTab(nextTab);
+        return focusTab(firstTab);
+      }
 
-    if (event.key === "ArrowLeft") {
-      if (currentTabIndex > 0) return focusTab(prevTab);
-      return focusTab(lastTab);
-    }
+      if (event.key === "ArrowLeft") {
+        if (currentTabIndex > 0) return focusTab(prevTab);
+        return focusTab(lastTab);
+      }
 
-    if (event.key === "Home") {
-      event.preventDefault();
-      return focusTab(firstTab);
-    }
+      if (event.key === "Home") {
+        event.preventDefault();
+        return focusTab(firstTab);
+      }
 
-    if (event.key === "End") {
-      event.preventDefault();
-      return focusTab(lastTab);
-    }
-  };
+      if (event.key === "End") {
+        event.preventDefault();
+        return focusTab(lastTab);
+      }
+    };
 
   return (
     <Wrap>
